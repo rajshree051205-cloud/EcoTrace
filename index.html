@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>EcoTrace — Track. Act. Inspire.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Satoshi:wght@400;500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="logo">🌿 EcoTrace</div>
+  <div class="nav-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <canvas id="earthCanvas"></canvas>
+  <div class="particles" id="particles"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🌍 Global Climate Action Platform</div>
+    <h1>Know Your Planet.<br><span class="h1-green">Save Your Future.</span></h1>
+    <p class="hero-sub">Discover the real environmental challenges your country faces.<br>Take action. Track your impact. Inspire the world.</p>
+    <div class="search-box">
+      <input type="text" id="countryInput" placeholder="Enter your country (e.g. India, Brazil...)" autocomplete="off"/>
+      <button onclick="searchCountry()">Explore 🌱</button>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">195+</div><div class="stat-label">Countries</div></div>
+      <div class="stat"><div class="stat-num">12K+</div><div class="stat-label">Actions Taken</div></div>
+      <div class="stat"><div class="stat-num">3.2K</div><div class="stat-label">Trees Planted</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Result Section -->
+<div id="resultSection">
+  <div class="country-header">
+    <div class="country-flag" id="countryFlag">🌍</div>
+    <div>
+      <div class="country-name" id="countryNameDisplay"></div>
+      <span class="country-tag">Climate Report 2026</span>
+    </div>
+  </div>
+
+  <div class="issues-grid" id="issuesGrid"></div>
+
+  <!-- Contribute -->
+  <div class="contribute-section">
+    <div class="section-title">💪 How You Can Contribute</div>
+    <div class="section-sub">Choose an action you want to take today — every step counts.</div>
+    <div class="actions-grid" id="actionsGrid"></div>
+  </div>
+
+  <!-- Upload -->
+  <div class="upload-section">
+    <div class="section-title">📸 Prove Your Action</div>
+    <div class="section-sub">Upload a photo or video of what you did. Inspire others!</div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" accept="image/*,video/*" onchange="handleUpload(event)"/>
+      <div class="upload-icon">📁</div>
+      <div class="upload-text">Drop your photo or video here</div>
+      <div class="upload-sub">JPG, PNG, MP4 supported</div>
+    </div>
+    <div id="uploadPreview"><img id="previewImg" src="" alt="preview"/></div>
+  </div>
+
+  <!-- User Info -->
+  <div class="user-form">
+    <div class="section-title" style="margin-bottom:0.4rem;">🎉 Claim Your Recognition</div>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1.4rem;">We'll send you an appreciation email and add your action to the global tracker.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="userName" placeholder="e.g. Arjun Sharma"/>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="userEmail" placeholder="your@email.com"/>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="submitAction()">Submit My Eco Action 🌱</button>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashSection">
+  <div class="section-title">📊 Your Impact Dashboard</div>
+  <div class="section-sub" id="dashGreeting"></div>
+  <div class="dash-grid">
+    <div class="dash-card"><div class="dash-num" id="totalActions">0</div><div class="dash-label">Total Actions</div></div>
+    <div class="dash-card"><div class="dash-num" id="weekActions">0</div><div class="dash-label">This Week</div></div>
+    <div class="dash-card"><div class="dash-num" id="monthActions">0</div><div class="dash-label">This Month</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('weekly',this)">Weekly</div>
+    <div class="tab" onclick="switchTab('monthly',this)">Monthly</div>
+    <div class="tab" onclick="switchTab('all',this)">All Time</div>
+  </div>
+  <div id="actionsList" style="margin-bottom:2rem;"></div>
+
+  <!-- Share Card -->
+  <div class="share-card">
+    <div class="share-card-content">
+      <div style="font-size:2.5rem;margin-bottom:0.5rem;">🌱</div>
+      <div class="share-username" id="shareUsername">Eco Warrior</div>
+      <div class="share-impact" id="shareImpact">Making a difference for our planet</div>
+      <div class="share-badges">
+        <span class="badge">🌳 Tree Planter</span>
+        <span class="badge">♻️ Eco Warrior</span>
+        <span class="badge">🌍 Climate Champion</span>
+      </div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-bottom:1.2rem;">via EcoTrace — Track. Act. Inspire.</div>
+      <div class="share-btns">
+        <button class="share-social" onclick="share('twitter')">🐦 Twitter / X</button>
+        <button class="share-social" onclick="share('whatsapp')">💬 WhatsApp</button>
+        <button class="share-social" onclick="share('instagram')">📸 Instagram</button>
+        <button class="share-social" onclick="copyCard()">📋 Copy Text</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" id="modalBox">
+    <div class="modal-emoji">🎉</div>
+    <div class="modal-title">You're Amazing!</div>
+    <div class="modal-sub" id="modalText">Your eco action has been recorded. An appreciation email is on its way! Keep inspiring the world 🌍</div>
+    <button class="modal-close" onclick="closeModal()">View My Impact 📊</button>
+  </div>
+</div>
+
+<footer>
+  <p>Made with 💚 for the planet &nbsp;|&nbsp; <span>EcoTrace</span> — Track. Act. Inspire.</p>
+</footer>
+
+<script src="script.js">
+
+</script>
+</body>
+</html>
